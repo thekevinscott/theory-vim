@@ -13,6 +13,9 @@
     Plug 'honza/vim-snippets'
     Plug 'greg-js/vim-react-es6-snippets'
 
+    " Nerdtree is a file browser in the left pane
+    Plug 'scrooloose/nerdtree'
+
     "Language protocol support
     Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
