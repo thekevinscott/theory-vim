@@ -26,9 +26,6 @@
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
 
-    "Additional syntax detection & highlighting
-    Plug 'rust-lang/rust.vim'
-
     "See editorconfig.org
     Plug 'editorconfig/editorconfig-vim'
 
@@ -53,17 +50,8 @@
     "JSX support
     Plug 'mxw/vim-jsx'
 
-    "CoffeeScript support
-    Plug 'kchmck/vim-coffee-script'
-
-    "Haxe support
-    Plug 'rf-/vaxe'
-
     "Improved Markdown support
     Plug 'plasticboy/vim-markdown'
-
-    "ActionScript support
-    Plug 'jeroenbourgois/vim-actionscript'
 
     "Modify surrounding chars, such as parantheses & quotes
     Plug 'tpope/vim-surround'
