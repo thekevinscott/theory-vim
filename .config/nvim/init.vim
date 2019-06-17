@@ -107,8 +107,6 @@
     set relativenumber
     "...except the current line
     set number
-
-    colorscheme molokai256
 "}}}
 
 "Key mappings {{{

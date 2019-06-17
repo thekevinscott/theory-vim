@@ -37,8 +37,10 @@ RUN curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 
 RUN cd /root \
 && git clone https://github.com/thekevinscott/theory-vim.git \
+&& cd theory-vim \
 && git checkout aa99c5a43b88608683d7f45814c9610490238b3f \
-&& mv theory-vim/.config .config
+# && mv theory-vim/.config .config
+&& mv .config ../.config
 
 RUN nvim +PlugInstall +qall
 
