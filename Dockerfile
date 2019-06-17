@@ -22,20 +22,22 @@ RUN apt-get install -y \
 RUN add-apt-repository ppa:jonathonf/python-3.6 && \
     apt-get update -y && \
     apt-get install -y \
-    python \
+    python-dev \
     python-pip \
-    python3.6 \
+    python3.6-dev \
     python3-pip
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
 
 RUN apt-get install -y \
     nodejs \
     npm
 
-RUN pip3 install --upgrade pip neovim flake8 autopep8 python-language-server neovim-remote && \
-    gem install --no-document etc json rubocop solargraph && \
-    npm install --global eslint prettier typescript typescript-language-server dockerfile-language-server-nodejs && \
-    go get golang.org/x/lint/golint && \
-    go get golang.org/x/tools/cmd/gopls
+RUN pip3 install --upgrade pip neovim flake8 autopep8 python-language-server neovim-remote
+# RUN gem install --no-document etc json rubocop solargraph 
+RUN npm install --global eslint prettier typescript typescript-language-server dockerfile-language-server-nodejs
+#     go get golang.org/x/lint/golint && \
+#     go get golang.org/x/tools/cmd/gopls
 
 RUN npm install --global textlint textlint-rule-preset-ja-technical-writing textlint-rule-spellcheck-tech-word
 

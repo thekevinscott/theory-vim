@@ -77,10 +77,17 @@
 "}}}
 
 "Basic settings {{{
+    let mapleader="\<SPACE>"
+
+    " Sets how many lines of history VIM has to remember
+    set history=1000
+    set wildmenu
+
     set expandtab
     set shiftwidth=2
     set tabstop=2
     set smartindent
+    setlocal autoindent
     set smarttab
 
     set ignorecase
@@ -89,7 +96,6 @@
     set incsearch
 
     set wildmode=longest:full
-    set wildmenu
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/vendor,*/node_modules
 
     set foldmethod=marker
@@ -108,9 +114,24 @@
     set mouse=""
 
     "Use relative line numbers for all lines...
-    set relativenumber
+    " set relativenumber
     "...except the current line
     set number
+
+    "Always show current position
+    set ruler
+
+    " Configure backspace so it acts as it should act
+    set backspace=eol,start,indent
+    set whichwrap+=<,>,h,l
+
+    " Speed speed speed. When this option is set, the screen will not be
+    " redrawn while executing macros, registers and other commands that have
+    " not been typed. Also, updating the window title is postponed.
+    " To force an update use |:redraw|.
+    set lazyredraw
+
+    colo desert
 "}}}
 
 "Key mappings {{{
@@ -128,6 +149,9 @@
     nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
     imap jj <Esc>
+
+    nmap <Leader>s :%S//g<Left><Left>
+    vmap <Leader>s :S//g<Left><Left>
 "}}}
 
 "Misc {{{
@@ -136,6 +160,54 @@
 
     "Disable background color erase
     set t_ut=
+
+    " Turn backup off, since most stuff is in SVN, git et.c anyway...
+    set nobackup
+    set nowb
+    set noswapfile
+    set nowritebackup
+
+    set expandtab
+    set smarttab
+    set shiftwidth=2
+    set tabstop=2
+
+    set lbr
+    set tw=500
+    set nojoinspaces
+    set nostartofline
+
+    set ai "Auto indent
+    set si "Smart indent
+    set wrap "Wrap lines
+
+    " Tell Vim which characters to show for expanded TABs,
+    " trailing whitespace, and end-of-lines. VERY useful!
+    if &listchars ==# 'eol:$'
+      set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+    endif
+    set list                " Show problematic characters.
+
+    " Also highlight all tabs and trailing whitespace characters.
+    highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+    match ExtraWhitespace /\s\+$\|\t/
+
+    " Commenting
+    vmap <leader>c gc<CR>k
+    nmap <leader>c gcc<CR>k
+
+    " Jumping around splits
+    nnoremap <C-J> <C-W><C-J>
+    nnoremap <C-K> <C-W><C-K>
+    nnoremap <C-L> <C-W><C-L>
+    nnoremap <C-H> <C-W><C-H>
+
+    " System clipboard
+    set clipboard=unnamed
+
+    " Treat long lines as break lines (useful when moving around in them)
+    map j gj
+    map k gk
 "}}}
 
 "Deoplete {{{
@@ -147,50 +219,62 @@
     let g:UltiSnipsJumpForwardTrigger="<c-b>"
     let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "}}}
-"
-"
-" Commenting
-vmap <leader>c gc<CR>k
-nmap <leader>c gcc<CR>k
 
-" Jumping around splits
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+"NerdTree {{{
+    let NERDTreeShowBookmarks=1
+    let NERDTreeChDirMode=0
+    let NERDTreeQuitOnOpen=0
+    let NERDTreeMouseMode=2
+    let NERDTreeShowHidden=1
+    let NERDTreeIgnore=['\.pyc','\~$','\.swo$','\.swp$','\.git$','\.hg','\.svn','\.       bzr', '\.DS_Store']
+    let NERDTreeKeepTreeInNewTab=1
+    let g:nerdtree_tabs_open_on_gui_startup=0
 
-" System clipboard
-set clipboard=unnamed
+    " auto-open nerd tree if no files are specified
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" Treat long lines as break lines (useful when moving around in them)
-map j gj
-map k gk
+    nmap <leader>d :NERDTreeToggle<CR>
+    nmap <leader>f :NERDTreeFind<CR>
+    nmap <C-n> :NERDTreeToggle<CR>
+"}}}
 
-" Nerdtree
-let NERDTreeShowBookmarks=1
-let NERDTreeChDirMode=0
-let NERDTreeQuitOnOpen=0
-let NERDTreeMouseMode=2
-let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.pyc','\~$','\.swo$','\.swp$','\.git$','\.hg','\.svn','\.       bzr', '\.DS_Store']
-let NERDTreeKeepTreeInNewTab=1
-let g:nerdtree_tabs_open_on_gui_startup=0
+"Ctrl P {{{
+    " set runtimepath^=~/.vim/bundle/ctrlp.vim
 
-" auto-open nerd tree if no files are specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    " Ctrl-p ignore node modules
+    "let g:ctrlp_custom_ignore = { 'dir' : 'node_modules' }
+    let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|ios\/build\|android\/app\/build'
+    let g:ctrlp_user_command = ['.git', 'cd %s; git ls-files -co --exclude-standard']
+"}}}
 
-nmap <leader>d :NERDTreeToggle<CR>
-nmap <leader>f :NERDTreeFind<CR>
-nmap <C-n> :NERDTreeToggle<CR>
+"Ale {{{
+    " Allow navigation to errors
+    nmap <silent> <leader>aj :ALENext<cr>
+    nmap <silent> <leader>ak :ALEPrevious<cr>
 
-" Ctrl P
-" set runtimepath^=~/.vim/bundle/ctrlp.vim
+    let g:ale_sign_column_always = 1
 
-" Ctrl-p ignore node modules
-"let g:ctrlp_custom_ignore = { 'dir' : 'node_modules' }
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|ios\/build\|android\/app\/build'
-let g:ctrlp_user_command = ['.git', 'cd %s; git ls-files -co --exclude-standard']
+    let g:ale_linters = { 'js': ['eslint'], 'jsx': ['eslint'], 'tsx': ['tslint', 'tsserver'] }
+
+    let g:ale_sign_error = '->'
+    let g:ale_sign_warning = '--'
+
+    " Don't lint minified js or node_modules
+    let g:ale_pattern_options = {
+    \ 'node_modules': {'ale_linters': [], 'ale_fixers': []},
+    \ '\.(ts|tsx)$': ['tslint', 'tsserver'],
+    \ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
+    \ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []}
+    \ }
+
+    let g:ale_linters = {'typescript': ['tslint', 'tsserver']}
+
+    " THIS DOESNT SEEM TO BE WORKING
+    " let g:ale_lint_on_text_changed = 'never'
+
+    let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+"}}}
 
 set pastetoggle=<F2>
 
@@ -223,16 +307,6 @@ augroup myvimrc
   au!
   au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
-
-" YouCompleteMe
-" let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_autoclose_preview_window_after_insertion = 1
-" let g:ycm_key_list_select_completion = ['<TAB>']
-" let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>']
-
-
-
-
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
