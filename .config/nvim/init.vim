@@ -5,10 +5,14 @@
     Plug 'tpope/vim-fugitive'
 
     "Autocompletion
-    function! DoRemote(arg)
-        UpdateRemotePlugins
-    endfunction
-    Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+    if has('nvim')
+      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    else
+      Plug 'Shougo/deoplete.nvim'
+      Plug 'roxma/nvim-yarp'
+      Plug 'roxma/vim-hug-neovim-rpc'
+    endif
+
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
     Plug 'greg-js/vim-react-es6-snippets'
@@ -124,22 +128,6 @@
     nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
     imap jj <Esc>
-"}}}
-
-"Statusline {{{
-    hi User1 ctermbg=black   ctermfg=white   guibg=darkgrey  guifg=white
-    hi User2 ctermbg=black   ctermfg=grey    guibg=darkgrey  guifg=grey
-
-    set laststatus=2
-    set statusline+=%1*
-    set statusline+=%F\ 
-    set statusline+=%2*
-    set statusline+=%m%r
-    set statusline+=%y
-    set statusline+=%{fugitive#statusline()}
-    set statusline+=%=
-    set statusline+=%10((%l,%c)%)\ 
-    set statusline+=%P
 "}}}
 
 "Misc {{{

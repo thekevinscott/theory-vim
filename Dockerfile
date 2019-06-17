@@ -6,21 +6,28 @@ RUN apt-get update -y && \
     apt-get install -y software-properties-common && \
     apt-add-repository -y ppa:neovim-ppa/stable && \
     apt-add-repository -y ppa:longsleep/golang-backports && \
-    apt-get update -y && \
-    apt-get install -y \
+    apt-get update -y
+
+RUN apt-get install -y \
     curl \
     git \
     neovim \
-    python-dev \
-    python-pip \
-    python3-dev \
-    python3-pip \
     build-essential \
     patch \
     ruby-dev \
     zlib1g-dev \
     liblzma-dev \
-    golang-go \
+    golang-go
+
+RUN add-apt-repository ppa:jonathonf/python-3.6 && \
+    apt-get update -y && \
+    apt-get install -y \
+    python \
+    python-pip \
+    python3.6 \
+    python3-pip
+
+RUN apt-get install -y \
     nodejs \
     npm
 
@@ -35,12 +42,13 @@ RUN npm install --global textlint textlint-rule-preset-ja-technical-writing text
 RUN curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-RUN cd /root \
-&& git clone https://github.com/thekevinscott/theory-vim.git \
-&& cd theory-vim \
-&& git checkout aa99c5a43b88608683d7f45814c9610490238b3f \
-# && mv theory-vim/.config .config
-&& mv .config ../.config
+# RUN cd /root \
+# && git clone https://github.com/thekevinscott/theory-vim.git \
+# && cd theory-vim \
+# && git checkout aa99c5a43b88608683d7f45814c9610490238b3f \
+# # && mv theory-vim/.config .config
+# && mv .config ../.config
+COPY .config /root/.config
 
 RUN nvim +PlugInstall +qall
 
