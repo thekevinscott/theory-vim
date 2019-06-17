@@ -60,6 +60,9 @@
     "Modify surrounding chars, such as parantheses & quotes
     Plug 'tpope/vim-surround'
 
+    " Ctrl+p
+    Plug 'ctrlpvim/ctrlp.vim'
+
     call plug#end()
 
 "}}}
