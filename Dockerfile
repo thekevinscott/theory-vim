@@ -44,13 +44,8 @@ RUN npm install --global textlint textlint-rule-preset-ja-technical-writing text
 RUN curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# RUN cd /root \
-# && git clone https://github.com/thekevinscott/theory-vim.git \
-# && cd theory-vim \
-# && git checkout aa99c5a43b88608683d7f45814c9610490238b3f \
-# # && mv theory-vim/.config .config
-# && mv .config ../.config
-COPY .config /root/.config
+RUN git clone https://github.com/thekevinscott/theory-vim.git \
+&& mv theory-vim/.config /root/.config
 
 RUN nvim +PlugInstall +qall
 
