@@ -196,6 +196,10 @@ set magic
 nmap <Leader>s :%S//g<Left><Left>
 vmap <Leader>s :S//g<Left><Left>
 
+" Turn off F1
+:nmap <F1> :echo<CR>
+:imap <F1> <C-o>:echo<CR>
+
 " Makes search act like search in modern browsers
 set incsearch
 
