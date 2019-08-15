@@ -292,7 +292,8 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " System clipboard
-set clipboard=unnamed
+" set clipboard=unnamed
+set clipboard+=unnamedplus
 
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
